@@ -2,7 +2,7 @@
 This is open source repository of voxscript extension version.
 
 # Web version
-voxscript.site
+https://voxscript.site/
 
 # Chrome Extension
 https://chromewebstore.google.com/detail/voxscript/ipiickiacjepghmjgidbmghgnjfgcnhf
