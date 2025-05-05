@@ -1,3 +1,6 @@
+# Voxscript
+Voxscript is a website and extension that helps you convert your speech to text.
+
 # Voxscript-extension
 This is open source repository of voxscript extension version.
 
