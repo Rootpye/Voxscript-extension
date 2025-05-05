@@ -14,5 +14,4 @@ This is open-sourced repository of voxscript extension version.
 
 # Support
 If you have questions about code, send email to here.
-
 - Email: roootpi@gmail.com
