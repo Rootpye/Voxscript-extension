@@ -10,7 +10,7 @@ Website: https://voxscript.site/
 Repository: https://github.com/Rootpye/Voxscript
 
 # Chrome Extension
-Chrome Web Storehttps://chromewebstore.google.com/detail/voxscript/ipiickiacjepghmjgidbmghgnjfgcnhf
+Chrome Web Store: https://chromewebstore.google.com/detail/voxscript/ipiickiacjepghmjgidbmghgnjfgcnhf
 
 # Support
 If you have questions about code, send email to here.
