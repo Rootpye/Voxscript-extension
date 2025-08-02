@@ -133,24 +133,24 @@ function speechToText() {
           
           switch (event.error) {
             case "no-speech":
-              showToast("음성이 감지되지 않았습니다.", 'warning');
+              showToast("No voice was detected.", 'warning');
               break;
             case "audio-capture":
-              showToast("마이크를 찾을 수 없습니다. 연결을 확인해주세요.", 'error');
+              showToast("Microphone not found, please check the connection.", 'error');
               stopRecording();
               break;
             case "not-allowed":
-              showToast("마이크 권한이 거부되었습니다.", 'error');
+              showToast("Microphone permission denied.", 'error');
               stopRecording();
               break;
             case "aborted":
-              showToast("음성 인식이 중단되었습니다.", 'info');
+              showToast("Speech recognition stopped.", 'info');
               break;
             case "network":
-              showToast("네트워크 오류가 발생했습니다.", 'error');
+              showToast("A network error has occurred.", 'error');
               break;
             default:
-              showToast(`인식 오류: ${event.error}`, 'error');
+              showToast(`Recognition error: ${event.error}`, 'error');
           }
         };
       })
@@ -160,34 +160,32 @@ function speechToText() {
         console.error("Microphone access error:", error);
         
         if (error.name === "NotAllowedError") {
-          showToast("마이크 권한을 허용해주세요.", 'error');
+          showToast("Please allow me the microphone permission.", 'error');
         } else if (error.name === "NotFoundError") {
-          showToast("마이크를 찾을 수 없습니다.", 'error');
+          showToast("Microphone not found.", 'error');
         } else {
-          showToast("마이크 접근 중 오류가 발생했습니다.", 'error');
+          showToast("An error occurred while accessing the microphone.", 'error');
         }
       });
   } catch (error) {
     recording = false;
     console.error("Speech recognition not supported:", error);
-    showToast("음성 인식이 지원되지 않는 브라우저입니다.", 'error');
+    showToast("This browser does not support voice recognition.", 'error');
   }
 }
 
-// 음성 명령 처리 (한국어/영어)
+// 음성 명령 처리 (영어)
 function processVoiceCommands(text) {
   const lowerText = text.toLowerCase();
   
   // 줄바꿈 명령
-  if (lowerText.includes("새 줄") || lowerText.includes("줄바꿈") || 
-      lowerText.includes("new line") || lowerText.includes("line break")) {
-    return text.replace(/(새 줄|줄바꿈|new line|line break)/gi, '<br>');
+  if (lowerText.includes("new line") || lowerText.includes("line break")) {
+    return text.replace(/(new line|line break)/gi, '<br>');
   }
   
   // 문단 나누기 명령
-  if (lowerText.includes("새 문단") || lowerText.includes("문단") || 
-      lowerText.includes("new paragraph") || lowerText.includes("paragraph")) {
-    return text.replace(/(새 문단|문단|new paragraph|paragraph)/gi, '<br><br>');
+  if (lowerText.includes("new paragraph") || lowerText.includes("paragraph")) {
+    return text.replace(/(new paragraph|paragraph)/gi, '<br><br>');
   }
   
   return text;
@@ -207,7 +205,7 @@ function stopRecording() {
 function exportAs(format) {
   const text = result.innerText.trim();
   if (!text) {
-    showToast("내보낼 텍스트가 없습니다.", 'warning');
+    showToast("There is no text to export.", 'warning');
     return;
   }
   
@@ -244,7 +242,7 @@ function exportAs(format) {
       break;
   }
   
-  showToast(`${format.toUpperCase()} 파일로 내보내기 완료!`);
+  showToast(`${format.toUpperCase()} Export to file completed!`);
 }
 
 // 파일 다운로드 헬퍼 함수
@@ -356,7 +354,7 @@ function exportAsDocx(text, filename) {
           <w:sz w:val="24"/>
           <w:szCs w:val="24"/>
         </w:rPr>
-        <w:t>Voxscript 음성 인식 결과</w:t>
+        <w:t>Voxscript Speech Recognition Results</w:t>
       </w:r>
     </w:p>
     <w:p>
@@ -393,20 +391,20 @@ clearBtn.addEventListener("click", () => {
   }
   result.innerHTML = "";
   exportBtn.disabled = true;
-  showToast("내용이 지워졌습니다!");
+  showToast("Your content has been erased!");
 });
 
 // 복사 버튼
 copyBtn.addEventListener("click", async () => {
   const text = result.innerText.trim();
   if (!text) {
-    showToast("복사할 텍스트가 없습니다.", 'warning');
+    showToast("Copy failed.", 'warning');
     return;
   }
   
   try {
     await navigator.clipboard.writeText(text);
-    showToast("클립보드에 복사되었습니다!");
+    showToast("Copied to clipboard!");
   } catch (err) {
     // 폴백 방법
     const textArea = document.createElement('textarea');
@@ -417,9 +415,9 @@ copyBtn.addEventListener("click", async () => {
     textArea.select();
     try {
       document.execCommand('copy');
-      showToast("클립보드에 복사되었습니다!");
+      showToast("Copied to clipboard!");
     } catch (e) {
-      showToast("복사에 실패했습니다.", 'error');
+      showToast("Copy failed.", 'error');
     }
     document.body.removeChild(textArea);
   }
@@ -453,7 +451,7 @@ undoBtn.addEventListener("click", () => {
     historyIndex--;
     result.innerHTML = editHistory[historyIndex];
     updateEditButtons();
-    showToast("실행취소!");
+    showToast("Undo!");
   }
 });
 
@@ -462,20 +460,20 @@ redoBtn.addEventListener("click", () => {
     historyIndex++;
     result.innerHTML = editHistory[historyIndex];
     updateEditButtons();
-    showToast("다시실행!");
+    showToast("Redo!");
   }
 });
 
 boldBtn.addEventListener("click", () => {
   document.execCommand('bold');
   saveToHistory();
-  showToast("굵게 적용!");
+  showToast("Bold applied!");
 });
 
 italicBtn.addEventListener("click", () => {
   document.execCommand('italic');
   saveToHistory();
-  showToast("기울임 적용!");
+  showToast("Tilting applied!");
 });
 
 // 텍스트 영역 변경 감지
@@ -525,37 +523,38 @@ document.addEventListener('keydown', (e) => {
   // ESC 키로 녹음 중지
   if (e.key === 'Escape' && recording) {
     stopRecording();
-    showToast("녹음이 중지되었습니다.");
+    showToast("Recording has been stopped.");
   }
 });
 
 // 정보 버튼
 if (infoButton) {
   infoButton.addEventListener("click", () => {
-    const shortcuts = `Enhanced Voxscript v2.0
+    const shortcuts = `Voxscript 1.0.1
 
-새로운 기능:
-✓ 편집 가능한 텍스트 결과
-✓ 다양한 내보내기 형식 (TXT, PDF, DOCX, JSON)
-✓ 실행취소/다시실행 기능
-✓ 클립보드 복사
-✓ 음성 명령 지원
-✓ 키보드 단축키
+New Features:
+✓ Editable Text Results
+✓ Various export formats (TXT, PDF, DOCX, JSON)
+✓ Undo/Renable Features
+Copy ✓ Clipboard
+✓ Voice Command Support
+✓ Keyboard Shortcuts
 
-키보드 단축키:
-• Ctrl+S: TXT로 빠른 저장
-• Ctrl+Z: 실행취소
-• Ctrl+Shift+Z: 다시실행  
-• Ctrl+C: 전체 텍스트 복사
-• Ctrl+R: 녹음 시작/중지
-• ESC: 녹음 중지
+Keyboard Shortcuts:
+• Ctrl+S: Quick save to TXT
+• Ctrl+Z: Undoing
+• Ctrl+Shift+Z: Run again
+• Ctrl+C: Copy full text
+• Ctrl+R: Start/Stop recording
+• ESC: Stop recording
 
-음성 명령:
-• "새 줄" 또는 "줄바꿈": 줄 바꿈
-• "새 문단" 또는 "문단": 문단 나눔
+Voice Commands:
+• "New Line" or "New Line": New Line
+• "New Paragraphs" or "Paragraphs": Sharing Paragraphs
 
-개발자: Enhanced by AI Assistant
-GitHub: https://github.com/Rootpye`;
+Developer: Rootpye
+• Email: roootpye@gmail.com
+• GitHub: https://github.com/Rootpye`;
     
     alert(shortcuts);
   });
@@ -567,10 +566,10 @@ document.addEventListener('DOMContentLoaded', () => {
   updateEditButtons();
   
   // 기본 언어를 한국어로 설정 (선택사항)
-  const defaultLang = 'ko';
+  const defaultLang = 'en';
   if (inputLanguage.querySelector(`option[value="${defaultLang}"]`)) {
     inputLanguage.value = defaultLang;
   }
   
-  showToast("Voxscript이 준비되었습니다!", 'info');
+  showToast("Voxscript is ready!", 'info');
 });
