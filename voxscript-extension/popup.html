@@ -11,7 +11,7 @@
     <div class="container">
       <p class="heading">Voxscript</p>
       <div class="options">
-        <div class="anguage">
+        <div class="language">
           <p>Language</p>
           <select name="input-language" id="language"></select>
         </div>
@@ -24,26 +24,80 @@
         </div>
         <p>Start Listening</p>
       </button>
+      
+      <!-- 편집 도구 -->
+      <div class="edit-controls">
+        <button class="edit-btn" id="undoBtn" disabled>
+          <ion-icon name="arrow-undo-outline"></ion-icon>
+          Undo
+        </button>
+        <button class="edit-btn" id="redoBtn" disabled>
+          <ion-icon name="arrow-redo-outline"></ion-icon>
+          Redo
+        </button>
+        <button class="edit-btn" id="boldBtn">
+          <ion-icon name="text-outline"></ion-icon>
+          Bold
+        </button>
+        <button class="edit-btn" id="italicBtn">
+          <ion-icon name="text-outline"></ion-icon>
+          Italic
+        </button>
+      </div>
+      
       <p class="heading">Result :</p>
       <div
         class="result"
-        spellcheck="false"
+        contenteditable="true"
+        spellcheck="true"
         placeholder="Text will be shown here"
+        id="resultArea"
       >
         <p class="interim"></p>
       </div>
+      
       <div class="buttons">
         <button class="btn clear">
           <ion-icon name="trash-outline"></ion-icon>
           <p>Clear</p>
         </button>
-        <button class="btn download" disabled>
-          <ion-icon name="cloud-download-outline"></ion-icon>
-          <p>Download</p>
+        
+        <button class="btn" id="copyBtn">
+          <ion-icon name="copy-outline"></ion-icon>
+          <p>Copy</p>
         </button>
+        
+        <div class="export-dropdown">
+          <button class="btn download" id="exportBtn" disabled>
+            <ion-icon name="cloud-download-outline"></ion-icon>
+            <p>Export</p>
+          </button>
+          <div class="export-menu" id="exportMenu">
+            <div class="export-option" data-format="txt">
+              <ion-icon name="document-text-outline"></ion-icon>
+              Export as TXT
+            </div>
+            <div class="export-option" data-format="pdf">
+              <ion-icon name="document-outline"></ion-icon>
+              Export as PDF
+            </div>
+            <div class="export-option" data-format="docx">
+              <ion-icon name="document-outline"></ion-icon>
+              Export as DOCX
+            </div>
+            <div class="export-option" data-format="json">
+              <ion-icon name="code-outline"></ion-icon>
+              Export as JSON
+            </div>
+          </div>
+        </div>
+        
         <button id="infoButton" class="info-btn">ⓘ</button>
       </div>
     </div>
+
+    <!-- 토스트 알림 -->
+    <div class="toast" id="toast"></div>
 
     <!-- IONICONS -->
     <script type="module" src="lib/ionicons.esm.js"></script>
