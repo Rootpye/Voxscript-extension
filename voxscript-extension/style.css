@@ -6,13 +6,18 @@
   --text-color: #000;
   --light-text-color: #a5a5a5;
   --body-bg-color: #f5f5f5;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --error-color: #dc3545;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 body {
   min-height: 100vh;
   display: flex;
@@ -21,24 +26,30 @@ body {
   background-color: var(--body-bg-color);
   color: var(--text-color);
 }
+
 .container {
-  width: 400px;
+  width: 450px;
   padding: 20px;
   border-radius: 10px;
   background-color: var(--bg-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .container .heading {
   font-size: 25px;
   font-weight: 500;
   margin-bottom: 10px;
 }
+
 .container .options select {
   width: 100%;
   padding: 10px;
   border: 1px solid var(--light-text-color);
   border-radius: 5px;
   outline: none;
+  font-size: 14px;
 }
+
 .container .options div:not(:last-child) select {
   margin-bottom: 20px;
 }
@@ -49,6 +60,7 @@ body {
   margin-bottom: 5px;
   color: var(--light-text-color);
 }
+
 .container .line {
   position: relative;
   width: 100%;
@@ -57,6 +69,7 @@ body {
   opacity: 0.5;
   margin: 30px 0;
 }
+
 .btn {
   display: flex;
   align-items: center;
@@ -74,60 +87,273 @@ body {
   cursor: pointer;
   color: #fff;
   background-color: var(--primary-color);
+  transition: background-color 0.3s ease;
 }
+
+.btn:hover:not(:disabled) {
+  background-color: #2856e6;
+}
+
 .btn ion-icon {
   font-size: 30px;
 }
+
 .btn:disabled {
   background-color: var(--light-text-color);
   cursor: not-allowed;
 }
+
 .container .record img {
   width: 30px;
   height: 30px;
   display: none;
 }
+
 .container .record.recording img {
   display: block;
+  animation: pulse 1.5s infinite;
 }
+
 .container .record.recording ion-icon {
   display: none;
 }
+
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.1); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* 편집 기능 관련 스타일 */
+.edit-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.edit-btn {
+  padding: 8px 12px;
+  border: 1px solid var(--light-text-color);
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+}
+
+.edit-btn:hover:not(:disabled) {
+  background-color: #f0f0f0;
+  border-color: var(--primary-color);
+}
+
+.edit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.edit-btn ion-icon {
+  font-size: 16px;
+}
+
 .container .result {
   width: 100%;
   min-height: 200px;
-  padding: 10px;
-  border: 1px solid var(--light-text-color);
-  border-radius: 5px;
-  font-size: 18px;
-  font-weight: 500;
+  padding: 15px;
+  border: 2px solid var(--light-text-color);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 400;
   margin-bottom: 20px;
   color: var(--text-color);
+  line-height: 1.6;
+  outline: none;
+  background-color: #fafafa;
+  transition: all 0.3s ease;
 }
-.container .result p {
+
+.container .result:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(53, 106, 255, 0.2);
+  background-color: white;
+}
+
+.container .result:empty:before {
+  content: attr(placeholder);
+  color: var(--light-text-color);
+  font-style: italic;
+}
+
+.container .result p.interim {
   display: inline;
   margin-left: 3px;
   color: var(--light-text-color);
+  font-style: italic;
+  opacity: 0.7;
 }
+
 .buttons {
   display: flex;
-  gap: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
+
+.buttons .btn {
+  flex: 1;
+  min-width: 120px;
+  height: 50px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* 내보내기 드롭다운 */
+.export-dropdown {
+  position: relative;
+  flex: 1;
+  min-width: 120px;
+}
+
+.export-menu {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid var(--light-text-color);
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-bottom: 5px;
+}
+
+.export-menu.show {
+  display: block;
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.export-option {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.export-option:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.export-option:last-child {
+  border-bottom: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.export-option:hover {
+  background-color: #f8f9ff;
+  color: var(--primary-color);
+}
+
+.export-option ion-icon {
+  font-size: 18px;
+}
+
 .info-btn {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background-color: #007BFF;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(53, 106, 255, 0.3);
+  transition: all 0.3s ease;
 }
 
 .info-btn:hover {
-  background-color: #0056b3;
+  background-color: #2856e6;
+  transform: scale(1.05);
+}
+
+/* 알림 토스트 */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background-color: var(--success-color);
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateX(400px);
+  transition: transform 0.3s ease;
+  z-index: 1001;
+  font-weight: 500;
+  max-width: 300px;
+}
+
+.toast.show {
+  transform: translateX(0);
+}
+
+.toast.warning {
+  background-color: var(--warning-color);
+  color: #333;
+}
+
+.toast.error {
+  background-color: var(--error-color);
+}
+
+.toast.info {
+  background-color: #17a2b8;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 480px) {
+  .container {
+    width: 95%;
+    padding: 15px;
+  }
+  
+  .edit-controls {
+    gap: 5px;
+  }
+  
+  .edit-btn {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+  
+  .buttons {
+    flex-direction: column;
+  }
+  
+  .buttons .btn {
+    min-width: auto;
+  }
 }
